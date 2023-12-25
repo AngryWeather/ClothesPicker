@@ -8,7 +8,7 @@ import (
 
 func TestRandomClothing(t *testing.T) {
 	t.Run("returns clothing types", func(t *testing.T) {
-		request, _ := http.NewRequest(http.MethodGet, "/categories", nil)
+		request, _ := http.NewRequest(http.MethodGet, "/random/clothing", nil)
 		response := httptest.NewRecorder()
 
 		ClothingServer(response, request)
