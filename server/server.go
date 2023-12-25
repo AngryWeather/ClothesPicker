@@ -11,6 +11,9 @@ type Clothes struct {
 }
 
 func ClothingServer(w http.ResponseWriter, r *http.Request, c []Clothes) {
-	var randomC = []Clothes{c[rand.Intn(3)]}
-	json.NewEncoder(w).Encode(randomC)
+	json.NewEncoder(w).Encode(GetRandomClothing(c))
+}
+
+func GetRandomClothing(c []Clothes) []Clothes {
+	return []Clothes{c[rand.Intn(len(c))]}
 }
