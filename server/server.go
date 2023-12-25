@@ -1,10 +1,16 @@
 package server
 
 import (
-	"fmt"
+	"encoding/json"
+	"math/rand"
 	"net/http"
 )
 
-func ClothingServer(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprint(w, "blue sweater")
+type Clothes struct {
+	Name string
+}
+
+func ClothingServer(w http.ResponseWriter, r *http.Request, c []Clothes) {
+	var randomC = []Clothes{c[rand.Intn(3)]}
+	json.NewEncoder(w).Encode(randomC)
 }
