@@ -13,7 +13,7 @@ func (i *InMemoryClothesStore) GetRandomClothing() server.Clothes {
 }
 
 func main() {
-	server := &server.ClothesServer{&InMemoryClothesStore{}}
+	server := &server.ClothesServer{Store: &InMemoryClothesStore{}}
 
 	log.Fatal(http.ListenAndServe("localhost:5000", server))
 }
