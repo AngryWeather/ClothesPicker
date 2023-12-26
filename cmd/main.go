@@ -15,6 +15,10 @@ func (i *InMemoryClothesStore) GetRandomClothing() server.Clothes {
 	return i.clothes[rand.Intn(len(i.clothes))]
 }
 
+func (i *InMemoryClothesStore) GetAllClothes() []server.Clothes {
+	return i.clothes
+}
+
 func main() {
 	clothes := []server.Clothes{
 		{Name: "blue jeans"},

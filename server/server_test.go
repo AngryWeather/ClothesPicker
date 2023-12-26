@@ -16,6 +16,10 @@ func (s *StubClothesStore) GetRandomClothing() Clothes {
 	return s.clothes[1]
 }
 
+func (s *StubClothesStore) GetAllClothes() []Clothes {
+	return s.clothes
+}
+
 func TestRandomClothing(t *testing.T) {
 	clothes := []Clothes{
 		{Name: "blue jeans"},

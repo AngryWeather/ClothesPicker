@@ -7,6 +7,7 @@ import (
 
 type ClothesStore interface {
 	GetRandomClothing() Clothes
+	GetAllClothes() []Clothes
 }
 
 type ClothesServer struct {
@@ -22,13 +23,6 @@ func (c *ClothesServer) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	if r.URL.Path == "/random/clothes" {
 		json.NewEncoder(w).Encode(c.Store.GetRandomClothing())
 	} else if r.URL.Path == "/clothes" {
-		json.NewEncoder(w).Encode(GetAllClothes())
-	}
-}
-
-func GetAllClothes() []Clothes {
-	return []Clothes{
-		{Name: "blue jeans"},
-		{Name: "blue sweater"},
+		json.NewEncoder(w).Encode(c.Store.GetAllClothes())
 	}
 }
