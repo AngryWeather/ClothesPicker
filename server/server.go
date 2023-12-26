@@ -19,5 +19,9 @@ type Clothes struct {
 
 func (c *ClothesServer) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("content-type", "application/json")
-	json.NewEncoder(w).Encode(c.Store.GetRandomClothing())
+	if r.URL.Path == "/random/clothes" {
+		json.NewEncoder(w).Encode(c.Store.GetRandomClothing())
+	} else if r.URL.Path == "/clothes" {
+		json.NewEncoder(w).Encode([]Clothes{})
+	}
 }
