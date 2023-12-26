@@ -6,17 +6,15 @@ import (
 )
 
 type ClothesStore interface {
-	GetRandomClothing() Clothes
-	GetAllClothes() []Clothes
+	GetRandomClothing() string
+	GetAllClothes() Clothes
 }
 
 type ClothesServer struct {
 	Store ClothesStore
 }
 
-type Clothes struct {
-	Name string
-}
+type Clothes []string
 
 func (c *ClothesServer) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("content-type", "application/json")

@@ -8,22 +8,22 @@ import (
 )
 
 type InMemoryClothesStore struct {
-	clothes []server.Clothes
+	clothes server.Clothes
 }
 
-func (i *InMemoryClothesStore) GetRandomClothing() server.Clothes {
+func (i *InMemoryClothesStore) GetRandomClothing() string {
 	return i.clothes[rand.Intn(len(i.clothes))]
 }
 
-func (i *InMemoryClothesStore) GetAllClothes() []server.Clothes {
+func (i *InMemoryClothesStore) GetAllClothes() server.Clothes {
 	return i.clothes
 }
 
 func main() {
-	clothes := []server.Clothes{
-		{Name: "blue jeans"},
-		{Name: "blue sweater"},
-		{Name: "red hoodie"},
+	clothes := server.Clothes{
+		"blue jeans",
+		"blue sweater",
+		"red hoodie",
 	}
 	store := InMemoryClothesStore{clothes}
 	server := &server.ClothesServer{Store: &store}

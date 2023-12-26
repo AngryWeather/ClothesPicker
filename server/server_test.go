@@ -9,21 +9,21 @@ import (
 )
 
 type StubClothesStore struct {
-	clothes []Clothes
+	clothes Clothes
 }
 
-func (s *StubClothesStore) GetRandomClothing() Clothes {
+func (s *StubClothesStore) GetRandomClothing() string {
 	return s.clothes[1]
 }
 
-func (s *StubClothesStore) GetAllClothes() []Clothes {
+func (s *StubClothesStore) GetAllClothes() Clothes {
 	return s.clothes
 }
 
 func TestRandomClothing(t *testing.T) {
-	clothes := []Clothes{
-		{Name: "blue jeans"},
-		{Name: "blue sweater"},
+	clothes := Clothes{
+		"blue jeans",
+		"blue sweater",
 	}
 
 	store := StubClothesStore{
