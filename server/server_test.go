@@ -86,5 +86,13 @@ func TestGetAllClothes(t *testing.T) {
 			t.Errorf("got code %d, want %d", got, want)
 		}
 
+		wantedClothes := []Clothes{
+			{Name: "blue jeans"},
+			{Name: "blue sweater"},
+		}
+
+		if !reflect.DeepEqual(wantedClothes, clothes) {
+			t.Errorf("wanted %+v, got %+v", wantedClothes, clothes)
+		}
 	})
 }

@@ -22,6 +22,9 @@ func (c *ClothesServer) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	if r.URL.Path == "/random/clothes" {
 		json.NewEncoder(w).Encode(c.Store.GetRandomClothing())
 	} else if r.URL.Path == "/clothes" {
-		json.NewEncoder(w).Encode([]Clothes{})
+		json.NewEncoder(w).Encode([]Clothes{
+			{Name: "blue jeans"},
+			{Name: "blue sweater"},
+		})
 	}
 }
