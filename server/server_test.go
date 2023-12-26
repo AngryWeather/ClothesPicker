@@ -32,7 +32,7 @@ func TestRandomClothing(t *testing.T) {
 
 	server := &ClothesServer{&store}
 
-	t.Run("returns random clothing as length of 1", func(t *testing.T) {
+	t.Run("returns random clothing as string", func(t *testing.T) {
 
 		request, _ := http.NewRequest(http.MethodGet, "/random/clothes", nil)
 		response := httptest.NewRecorder()
