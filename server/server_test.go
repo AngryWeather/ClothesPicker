@@ -4,32 +4,48 @@ import (
 	"encoding/json"
 	"net/http"
 	"net/http/httptest"
+	"reflect"
 	"testing"
 )
 
+type StubClothesStore struct {
+	clothes []Clothes
+}
+
+func (s *StubClothesStore) GetRandomClothing() Clothes {
+	return s.clothes[1]
+}
+
 func TestRandomClothing(t *testing.T) {
-	t.Run("returns random clothing", func(t *testing.T) {
-		clothes := []Clothes{
-			{Name: "blue sweater"},
-			{Name: "red hoodie"},
-			{Name: "blue jeans"},
-		}
-		request, _ := http.NewRequest(http.MethodGet, "/random/clothing", nil)
+	clothes := []Clothes{
+		{Name: "blue jeans"},
+		{Name: "blue sweater"},
+	}
+
+	store := StubClothesStore{
+		clothes,
+	}
+
+	server := &ClothesServer{&store}
+
+	t.Run("returns random clothing as length of 1", func(t *testing.T) {
+
+		request, _ := http.NewRequest(http.MethodGet, "/random/clothes", nil)
 		response := httptest.NewRecorder()
 
-		var got []Clothes
-		ClothingServer(response, request, clothes)
+		server.ServeHTTP(response, request)
 
+		var got Clothes
 		err := json.NewDecoder(response.Body).Decode(&got)
 
 		if err != nil {
 			t.Fatalf("Unable to parse response from server %q into slice of %v", response.Body, err)
 		}
 
-		want := 1
+		want := Clothes{Name: "blue sweater"}
 
-		if len(got) != want {
-			t.Errorf("got %d, want %d", len(got), want)
+		if !reflect.DeepEqual(got, want) {
+			t.Errorf("got %+v, want %+v", got, want)
 		}
 	})
 

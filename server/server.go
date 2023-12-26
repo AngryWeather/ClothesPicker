@@ -2,18 +2,21 @@ package server
 
 import (
 	"encoding/json"
-	"math/rand"
 	"net/http"
 )
+
+type ClothesStore interface {
+	GetRandomClothing() Clothes
+}
+
+type ClothesServer struct {
+	Store ClothesStore
+}
 
 type Clothes struct {
 	Name string
 }
 
-func ClothingServer(w http.ResponseWriter, r *http.Request, c []Clothes) {
-	json.NewEncoder(w).Encode(GetRandomClothing(c))
-}
-
-func GetRandomClothing(c []Clothes) []Clothes {
-	return []Clothes{c[rand.Intn(len(c))]}
+func (c *ClothesServer) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+	json.NewEncoder(w).Encode(c.Store.GetRandomClothing())
 }
