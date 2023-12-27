@@ -11,20 +11,28 @@ type ClothesStore interface {
 }
 
 type ClothesServer struct {
-	Store ClothesStore
+	Store  ClothesStore
+	router *http.ServeMux
+}
+
+func NewClothesServer(store ClothesStore) *ClothesServer {
+	c := &ClothesServer{
+		store,
+		http.NewServeMux(),
+	}
+
+	c.router.Handle("/random/clothes", http.HandlerFunc(c.randomClothesHandler))
+	c.router.Handle("/clothes", http.HandlerFunc(c.clothesHandler))
+
+	return c
 }
 
 type Clothes []string
 
 func (c *ClothesServer) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-	router := http.NewServeMux()
-
 	w.Header().Set("content-type", "application/json")
 
-	router.Handle("/random/clothes", http.HandlerFunc(c.randomClothesHandler))
-	router.Handle("/clothes", http.HandlerFunc(c.clothesHandler))
-
-	router.ServeHTTP(w, r)
+	c.router.ServeHTTP(w, r)
 }
 
 func (c *ClothesServer) randomClothesHandler(w http.ResponseWriter, r *http.Request) {

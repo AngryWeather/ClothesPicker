@@ -26,7 +26,7 @@ func main() {
 		"red hoodie",
 	}
 	store := InMemoryClothesStore{clothes}
-	server := &server.ClothesServer{Store: &store}
+	server := server.NewClothesServer(&store)
 
 	log.Fatal(http.ListenAndServe("localhost:5000", server))
 }

@@ -30,7 +30,7 @@ func TestRandomClothing(t *testing.T) {
 		clothes,
 	}
 
-	server := &ClothesServer{&store}
+	server := NewClothesServer(&store)
 
 	t.Run("returns random clothing as string", func(t *testing.T) {
 
@@ -68,7 +68,7 @@ func TestGetAllClothes(t *testing.T) {
 		clothes,
 	}
 
-	server := &ClothesServer{&store}
+	server := NewClothesServer(&store)
 
 	t.Run("returns all clothes", func(t *testing.T) {
 		request, _ := http.NewRequest(http.MethodGet, "/clothes", nil)
