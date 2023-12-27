@@ -20,13 +20,17 @@ func (c *ClothesServer) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	router := http.NewServeMux()
 
 	w.Header().Set("content-type", "application/json")
-	router.Handle("/random/clothes", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		json.NewEncoder(w).Encode(c.Store.GetRandomClothing())
-	}))
 
-	router.Handle("/clothes", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		json.NewEncoder(w).Encode(c.Store.GetAllClothes())
-	}))
+	router.Handle("/random/clothes", http.HandlerFunc(c.randomClothesHandler))
+	router.Handle("/clothes", http.HandlerFunc(c.clothesHandler))
 
 	router.ServeHTTP(w, r)
+}
+
+func (c *ClothesServer) randomClothesHandler(w http.ResponseWriter, r *http.Request) {
+	json.NewEncoder(w).Encode(c.Store.GetRandomClothing())
+}
+
+func (c *ClothesServer) clothesHandler(w http.ResponseWriter, r *http.Request) {
+	json.NewEncoder(w).Encode(c.Store.GetAllClothes())
 }
