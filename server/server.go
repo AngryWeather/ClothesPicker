@@ -31,11 +31,15 @@ func NewClothesServer(store ClothesStore) *ClothesServer {
 type Clothes []string
 
 func (c *ClothesServer) randomClothesHandler(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("content-type", "application/json")
+	setJsonHeader(w)
 	json.NewEncoder(w).Encode(c.Store.GetRandomClothing())
 }
 
 func (c *ClothesServer) clothesHandler(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("content-type", "application/json")
+	setJsonHeader(w)
 	json.NewEncoder(w).Encode(c.Store.GetAllClothes())
+}
+
+func setJsonHeader(w http.ResponseWriter) {
+	w.Header().Set("content-type", "application/json")
 }
