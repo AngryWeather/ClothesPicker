@@ -17,10 +17,16 @@ type ClothesServer struct {
 type Clothes []string
 
 func (c *ClothesServer) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+	router := http.NewServeMux()
+
 	w.Header().Set("content-type", "application/json")
-	if r.URL.Path == "/random/clothes" {
+	router.Handle("/random/clothes", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		json.NewEncoder(w).Encode(c.Store.GetRandomClothing())
-	} else if r.URL.Path == "/clothes" {
+	}))
+
+	router.Handle("/clothes", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		json.NewEncoder(w).Encode(c.Store.GetAllClothes())
-	}
+	}))
+
+	router.ServeHTTP(w, r)
 }
