@@ -11,6 +11,8 @@ type InMemoryClothesStore struct {
 	clothes server.Clothes
 }
 
+func (i *InMemoryClothesStore) RecordNewClothes(c server.Clothes) {}
+
 func (i *InMemoryClothesStore) GetRandomClothing() string {
 	return i.clothes[rand.Intn(len(i.clothes))]
 }

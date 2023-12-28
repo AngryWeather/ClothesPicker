@@ -8,6 +8,7 @@ import (
 type ClothesStore interface {
 	GetRandomClothing() string
 	GetAllClothes() Clothes
+	RecordNewClothes(c Clothes)
 }
 
 type ClothesServer struct {
@@ -40,9 +41,14 @@ func (c *ClothesServer) clothesHandler(w http.ResponseWriter, r *http.Request) {
 	switch r.Method {
 	case http.MethodPost:
 		w.WriteHeader(http.StatusAccepted)
+		c.Store.RecordNewClothes(Clothes{"sweater"})
 	case http.MethodGet:
-		json.NewEncoder(w).Encode(c.Store.GetAllClothes())
+		c.showClothes(w)
 	}
+}
+
+func (c *ClothesServer) showClothes(w http.ResponseWriter) {
+	json.NewEncoder(w).Encode(c.Store.GetAllClothes())
 }
 
 func setJsonHeader(w http.ResponseWriter) {

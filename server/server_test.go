@@ -9,11 +9,17 @@ import (
 )
 
 type StubClothesStore struct {
-	clothes Clothes
+	clothes         Clothes
+	newClothesCalls []Clothes
 }
 
 func (s *StubClothesStore) GetRandomClothing() string {
 	return s.clothes[1]
+}
+
+func (s *StubClothesStore) RecordNewClothes(c Clothes) {
+	s.newClothesCalls = append(s.newClothesCalls, c)
+	print(s.newClothesCalls)
 }
 
 func (s *StubClothesStore) GetAllClothes() Clothes {
@@ -28,6 +34,7 @@ func TestRandomClothing(t *testing.T) {
 
 	store := StubClothesStore{
 		clothes,
+		nil,
 	}
 
 	server := NewClothesServer(&store)
@@ -66,6 +73,7 @@ func TestGetAllClothes(t *testing.T) {
 
 	store := StubClothesStore{
 		clothes,
+		nil,
 	}
 
 	server := NewClothesServer(&store)
@@ -107,11 +115,12 @@ func TestPostClothes(t *testing.T) {
 
 	store := StubClothesStore{
 		clothes,
+		nil,
 	}
 
 	server := NewClothesServer(&store)
 
-	t.Run("returns 204 on post", func(t *testing.T) {
+	t.Run("creates new clothing", func(t *testing.T) {
 		request, _ := http.NewRequest(http.MethodPost, "/clothes", nil)
 		response := httptest.NewRecorder()
 
@@ -122,6 +131,9 @@ func TestPostClothes(t *testing.T) {
 
 		assertStatus(t, got, want)
 
+		if len(store.newClothesCalls) != 1 {
+			t.Errorf("got %d calls to RecordNewClothes, want %d", len(store.newClothesCalls), 1)
+		}
 	})
 }
 
