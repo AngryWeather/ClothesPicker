@@ -37,7 +37,12 @@ func (c *ClothesServer) randomClothesHandler(w http.ResponseWriter, r *http.Requ
 
 func (c *ClothesServer) clothesHandler(w http.ResponseWriter, r *http.Request) {
 	setJsonHeader(w)
-	json.NewEncoder(w).Encode(c.Store.GetAllClothes())
+	switch r.Method {
+	case http.MethodPost:
+		w.WriteHeader(http.StatusAccepted)
+	case http.MethodGet:
+		json.NewEncoder(w).Encode(c.Store.GetAllClothes())
+	}
 }
 
 func setJsonHeader(w http.ResponseWriter) {

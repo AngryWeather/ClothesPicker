@@ -86,9 +86,7 @@ func TestGetAllClothes(t *testing.T) {
 			t.Fatalf("Unable to parse response from server %q into slice of %v", response.Body, err)
 		}
 
-		if got != want {
-			t.Errorf("got code %d, want %d", got, want)
-		}
+		assertStatus(t, got, want)
 
 		wantedClothes := Clothes{
 			"blue jeans",
@@ -99,4 +97,38 @@ func TestGetAllClothes(t *testing.T) {
 			t.Errorf("wanted %+v, got %+v", wantedClothes, clothes)
 		}
 	})
+}
+
+func TestPostClothes(t *testing.T) {
+	clothes := Clothes{
+		"blue jeans",
+		"blue sweater",
+	}
+
+	store := StubClothesStore{
+		clothes,
+	}
+
+	server := NewClothesServer(&store)
+
+	t.Run("returns 204 on post", func(t *testing.T) {
+		request, _ := http.NewRequest(http.MethodPost, "/clothes", nil)
+		response := httptest.NewRecorder()
+
+		server.ServeHTTP(response, request)
+
+		got := response.Result().StatusCode
+		want := 202
+
+		assertStatus(t, got, want)
+
+	})
+}
+
+func assertStatus(t testing.TB, got, want int) {
+	t.Helper()
+
+	if got != want {
+		t.Errorf("got code %d, want %d", got, want)
+	}
 }
