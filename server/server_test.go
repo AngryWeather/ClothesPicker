@@ -1,6 +1,7 @@
 package server
 
 import (
+	"bytes"
 	"encoding/json"
 	"net/http"
 	"net/http/httptest"
@@ -121,7 +122,8 @@ func TestPostClothes(t *testing.T) {
 	server := NewClothesServer(&store)
 
 	t.Run("creates new clothing", func(t *testing.T) {
-		request, _ := http.NewRequest(http.MethodPost, "/clothes", nil)
+		requestBody, _ := json.Marshal(Clothes{"red trousers"})
+		request, _ := http.NewRequest(http.MethodPost, "/clothes", bytes.NewBuffer(requestBody))
 		response := httptest.NewRecorder()
 
 		server.ServeHTTP(response, request)
@@ -133,6 +135,10 @@ func TestPostClothes(t *testing.T) {
 
 		if len(store.newClothesCalls) != 1 {
 			t.Errorf("got %d calls to RecordNewClothes, want %d", len(store.newClothesCalls), 1)
+		}
+
+		if !reflect.DeepEqual(store.newClothesCalls[0], Clothes{"red trousers"}) {
+			t.Errorf("got %v, want %v", store.newClothesCalls[0], Clothes{"red trousers"})
 		}
 	})
 }

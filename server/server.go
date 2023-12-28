@@ -41,7 +41,12 @@ func (c *ClothesServer) clothesHandler(w http.ResponseWriter, r *http.Request) {
 	switch r.Method {
 	case http.MethodPost:
 		w.WriteHeader(http.StatusAccepted)
-		c.Store.RecordNewClothes(Clothes{"sweater"})
+		var clothes Clothes
+		err := json.NewDecoder(r.Body).Decode(&clothes)
+		if err != nil {
+			panic("could not parse json")
+		}
+		c.Store.RecordNewClothes(clothes)
 	case http.MethodGet:
 		c.showClothes(w)
 	}
