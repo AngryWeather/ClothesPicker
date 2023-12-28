@@ -8,7 +8,7 @@ import (
 type ClothesStore interface {
 	GetRandomClothing() string
 	GetAllClothes() Clothes
-	RecordNewClothes(c Clothes)
+	RecordNewClothes(s string)
 }
 
 type ClothesServer struct {
@@ -48,8 +48,8 @@ func (c *ClothesServer) clothesHandler(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func (c *ClothesServer) decodeClothesJson(r *http.Request) Clothes {
-	var clothes Clothes
+func (c *ClothesServer) decodeClothesJson(r *http.Request) string {
+	var clothes string
 	err := json.NewDecoder(r.Body).Decode(&clothes)
 	if err != nil {
 		panic("could not parse json")

@@ -11,15 +11,15 @@ import (
 
 type StubClothesStore struct {
 	clothes         Clothes
-	newClothesCalls []Clothes
+	newClothesCalls []string
 }
 
 func (s *StubClothesStore) GetRandomClothing() string {
 	return s.clothes[1]
 }
 
-func (s *StubClothesStore) RecordNewClothes(c Clothes) {
-	s.newClothesCalls = append(s.newClothesCalls, c)
+func (s *StubClothesStore) RecordNewClothes(str string) {
+	s.newClothesCalls = append(s.newClothesCalls, str)
 	print(s.newClothesCalls)
 }
 
@@ -122,7 +122,7 @@ func TestPostClothes(t *testing.T) {
 	server := NewClothesServer(&store)
 
 	t.Run("creates new clothing", func(t *testing.T) {
-		requestBody, _ := json.Marshal(Clothes{"red trousers"})
+		requestBody, _ := json.Marshal("red trousers")
 		request, _ := http.NewRequest(http.MethodPost, "/clothes", bytes.NewBuffer(requestBody))
 		response := httptest.NewRecorder()
 
@@ -137,8 +137,8 @@ func TestPostClothes(t *testing.T) {
 			t.Errorf("got %d calls to RecordNewClothes, want %d", len(store.newClothesCalls), 1)
 		}
 
-		if !reflect.DeepEqual(store.newClothesCalls[0], Clothes{"red trousers"}) {
-			t.Errorf("got %v, want %v", store.newClothesCalls[0], Clothes{"red trousers"})
+		if !reflect.DeepEqual(store.newClothesCalls[0], "red trousers") {
+			t.Errorf("got %v, want %v", store.newClothesCalls[0], "red trousers")
 		}
 	})
 }
