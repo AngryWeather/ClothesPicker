@@ -14,6 +14,10 @@ type StubClothesStore struct {
 	newClothesCalls []string
 }
 
+func (s *StubClothesStore) GetClothesById(i int) string {
+	return s.clothes[i-1]
+}
+
 func (s *StubClothesStore) GetRandomClothing() string {
 	return s.clothes[1]
 }

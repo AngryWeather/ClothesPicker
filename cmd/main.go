@@ -23,6 +23,10 @@ func (i *InMemoryClothesStore) GetAllClothes() server.Clothes {
 	return i.clothes
 }
 
+func (i *InMemoryClothesStore) GetClothesById(in int) string {
+	return i.clothes[in-1]
+}
+
 func main() {
 	clothes := server.Clothes{
 		"blue jeans",

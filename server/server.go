@@ -2,7 +2,6 @@ package server
 
 import (
 	"encoding/json"
-	"fmt"
 	"net/http"
 	"strconv"
 	"strings"
@@ -12,6 +11,7 @@ type ClothesStore interface {
 	GetRandomClothing() string
 	GetAllClothes() Clothes
 	RecordNewClothes(s string)
+	GetClothesById(i int) string
 }
 
 type ClothesServer struct {
@@ -42,7 +42,6 @@ func (c *ClothesServer) randomClothesHandler(w http.ResponseWriter, r *http.Requ
 func (c *ClothesServer) clothesHandler(w http.ResponseWriter, r *http.Request) {
 	setJsonHeader(w)
 	id_prefix := strings.TrimPrefix(r.URL.Path, "/clothes/")
-	fmt.Printf("\n\nid: %q\n\n", id_prefix)
 
 	if len(id_prefix) == 0 {
 		switch r.Method {
@@ -57,9 +56,9 @@ func (c *ClothesServer) clothesHandler(w http.ResponseWriter, r *http.Request) {
 		id, _ := strconv.Atoi(id_prefix)
 		switch id {
 		case 1:
-			json.NewEncoder(w).Encode("blue jeans")
+			json.NewEncoder(w).Encode(c.Store.GetClothesById(id))
 		case 2:
-			json.NewEncoder(w).Encode("blue sweater")
+			json.NewEncoder(w).Encode(c.Store.GetClothesById(id))
 		}
 	}
 
