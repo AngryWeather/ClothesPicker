@@ -2,7 +2,10 @@ package server
 
 import (
 	"encoding/json"
+	"fmt"
 	"net/http"
+	"strconv"
+	"strings"
 )
 
 type ClothesStore interface {
@@ -22,13 +25,7 @@ func NewClothesServer(store ClothesStore) *ClothesServer {
 
 	router := http.NewServeMux()
 	router.Handle("/random/clothes", http.HandlerFunc(c.randomClothesHandler))
-	router.Handle("/clothes", http.HandlerFunc(c.clothesHandler))
-	router.Handle("/clothes/1", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		json.NewEncoder(w).Encode("blue jeans")
-	}))
-	router.Handle("/clothes/2", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		json.NewEncoder(w).Encode("blue sweater")
-	}))
+	router.Handle("/clothes/", http.HandlerFunc(c.clothesHandler))
 
 	c.Handler = router
 
@@ -44,14 +41,28 @@ func (c *ClothesServer) randomClothesHandler(w http.ResponseWriter, r *http.Requ
 
 func (c *ClothesServer) clothesHandler(w http.ResponseWriter, r *http.Request) {
 	setJsonHeader(w)
-	switch r.Method {
-	case http.MethodPost:
-		w.WriteHeader(http.StatusAccepted)
-		clothes := c.decodeClothesJson(r)
-		c.Store.RecordNewClothes(clothes)
-	case http.MethodGet:
-		c.showClothes(w)
+	id_prefix := strings.TrimPrefix(r.URL.Path, "/clothes/")
+	fmt.Printf("\n\nid: %q\n\n", id_prefix)
+
+	if len(id_prefix) == 0 {
+		switch r.Method {
+		case http.MethodPost:
+			w.WriteHeader(http.StatusAccepted)
+			clothes := c.decodeClothesJson(r)
+			c.Store.RecordNewClothes(clothes)
+		case http.MethodGet:
+			c.showClothes(w)
+		}
+	} else {
+		id, _ := strconv.Atoi(id_prefix)
+		switch id {
+		case 1:
+			json.NewEncoder(w).Encode("blue jeans")
+		case 2:
+			json.NewEncoder(w).Encode("blue sweater")
+		}
 	}
+
 }
 
 func (c *ClothesServer) decodeClothesJson(r *http.Request) string {

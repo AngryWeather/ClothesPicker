@@ -80,7 +80,7 @@ func TestGetAllClothes(t *testing.T) {
 	server := NewClothesServer(&store)
 
 	t.Run("returns all clothes", func(t *testing.T) {
-		request, _ := http.NewRequest(http.MethodGet, "/clothes", nil)
+		request, _ := http.NewRequest(http.MethodGet, "/clothes/", nil)
 		response := httptest.NewRecorder()
 
 		server.ServeHTTP(response, request)
@@ -123,7 +123,7 @@ func TestPostClothes(t *testing.T) {
 
 	t.Run("creates new clothing", func(t *testing.T) {
 		requestBody, _ := json.Marshal("red trousers")
-		request, _ := http.NewRequest(http.MethodPost, "/clothes", bytes.NewBuffer(requestBody))
+		request, _ := http.NewRequest(http.MethodPost, "/clothes/", bytes.NewBuffer(requestBody))
 		response := httptest.NewRecorder()
 
 		server.ServeHTTP(response, request)

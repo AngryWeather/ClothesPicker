@@ -40,13 +40,13 @@ func TestRecordingClothesAndRetrieving(t *testing.T) {
 }
 
 func newGetAllClothesRequest() *http.Request {
-	req, _ := http.NewRequest(http.MethodGet, "/clothes", nil)
+	req, _ := http.NewRequest(http.MethodGet, "/clothes/", nil)
 	return req
 }
 
 func newClothesRequest(name string) *http.Request {
 	requestBody, _ := json.Marshal(name)
-	request, _ := http.NewRequest(http.MethodPost, "/clothes", bytes.NewBuffer(requestBody))
+	request, _ := http.NewRequest(http.MethodPost, "/clothes/", bytes.NewBuffer(requestBody))
 
 	return request
 }
