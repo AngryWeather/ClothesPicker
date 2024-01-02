@@ -176,25 +176,25 @@ func TestGetClothingWithId(t *testing.T) {
 		}
 	})
 
-	// t.Run("returns clothing with id 2", func(t *testing.T) {
-	// 	request, _ := http.NewRequest(http.MethodGet, "clothes/2", nil)
-	// 	response := httptest.NewRecorder()
+	t.Run("returns clothing with id 2", func(t *testing.T) {
+		request, _ := http.NewRequest(http.MethodGet, "/clothes/2", nil)
+		response := httptest.NewRecorder()
 
-	// 	server.ServeHTTP(response, request)
+		server.ServeHTTP(response, request)
 
-	// 	var got string
-	// 	err := json.NewDecoder(response.Body).Decode(&got)
+		var got string
+		err := json.NewDecoder(response.Body).Decode(&got)
 
-	// 	if err != nil {
-	// 		t.Fatalf("Unable to parse response from server %q into slice of %v", response.Body, err)
-	// 	}
+		if err != nil {
+			t.Fatalf("Unable to parse response from server %q into slice of %v", response.Body, err)
+		}
 
-	// 	want := "blue sweater"
+		want := "blue sweater"
 
-	// 	if got != want {
-	// 		t.Errorf("got %q, want %q", got, want)
-	// 	}
-	// })
+		if got != want {
+			t.Errorf("got %q, want %q", got, want)
+		}
+	})
 }
 
 func assertStatus(t testing.TB, got, want int) {

@@ -26,6 +26,9 @@ func NewClothesServer(store ClothesStore) *ClothesServer {
 	router.Handle("/clothes/1", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		json.NewEncoder(w).Encode("blue jeans")
 	}))
+	router.Handle("/clothes/2", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		json.NewEncoder(w).Encode("blue sweater")
+	}))
 
 	c.Handler = router
 
