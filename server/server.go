@@ -59,7 +59,7 @@ func (c *ClothesServer) clothesHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func (c *ClothesServer) isIdValid(id int) bool {
-	return id > len(c.Store.GetAllClothes())
+	return id > len(c.Store.GetAllClothes()) || id == 0
 }
 
 func (c *ClothesServer) getClothesById(w http.ResponseWriter, id int) {
