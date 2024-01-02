@@ -23,6 +23,9 @@ func NewClothesServer(store ClothesStore) *ClothesServer {
 	router := http.NewServeMux()
 	router.Handle("/random/clothes", http.HandlerFunc(c.randomClothesHandler))
 	router.Handle("/clothes", http.HandlerFunc(c.clothesHandler))
+	router.Handle("/clothes/1", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		json.NewEncoder(w).Encode("blue jeans")
+	}))
 
 	c.Handler = router
 
