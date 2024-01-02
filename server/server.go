@@ -59,7 +59,11 @@ func (c *ClothesServer) clothesHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func (c *ClothesServer) getClothesById(w http.ResponseWriter, id int) {
-	json.NewEncoder(w).Encode(c.Store.GetClothesById(id))
+	if id > len(c.Store.GetAllClothes()) {
+		w.WriteHeader(http.StatusNotFound)
+	} else {
+		json.NewEncoder(w).Encode(c.Store.GetClothesById(id))
+	}
 }
 
 func (c *ClothesServer) decodeClothesJson(r *http.Request) string {

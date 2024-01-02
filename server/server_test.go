@@ -199,6 +199,19 @@ func TestGetClothingWithId(t *testing.T) {
 			t.Errorf("got %q, want %q", got, want)
 		}
 	})
+
+	t.Run("returns 404 on missing id", func(t *testing.T) {
+		request, _ := http.NewRequest(http.MethodGet, "/clothes/3", nil)
+		response := httptest.NewRecorder()
+
+		server.ServeHTTP(response, request)
+
+		got := response.Result().StatusCode
+		want := 404
+
+		assertStatus(t, got, want)
+
+	})
 }
 
 func assertStatus(t testing.TB, got, want int) {
