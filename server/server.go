@@ -46,9 +46,10 @@ func (c *ClothesServer) clothesHandler(w http.ResponseWriter, r *http.Request) {
 	if len(id_prefix) == 0 {
 		switch r.Method {
 		case http.MethodPost:
-			w.WriteHeader(http.StatusAccepted)
+			w.WriteHeader(http.StatusCreated)
 			clothes := c.decodeClothesJson(r)
 			c.Store.RecordNewClothes(clothes)
+			json.NewEncoder(w).Encode(clothes)
 		case http.MethodGet:
 			c.showClothes(w)
 		}

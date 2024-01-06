@@ -142,7 +142,19 @@ func TestPostClothes(t *testing.T) {
 		}
 
 		if !reflect.DeepEqual(store.newClothesCalls[0], "red trousers") {
-			t.Errorf("got %v, want %v", store.newClothesCalls[0], "red trousers")
+			t.Errorf("Wrong value stored: got %v, want %v", store.newClothesCalls[0], "red trousers")
+		}
+
+		var clothing string
+		err := json.NewDecoder(response.Body).Decode(&clothing)
+
+		if err != nil {
+			t.Fatalf("Unable to parse response from %v", clothing)
+		}
+
+		wantedClothing := "red trousers"
+		if !reflect.DeepEqual(wantedClothing, clothing) {
+			t.Errorf("Wrong returned value: got %q, want %q", clothing, wantedClothing)
 		}
 	})
 }
