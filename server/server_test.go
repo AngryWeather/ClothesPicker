@@ -133,7 +133,7 @@ func TestPostClothes(t *testing.T) {
 		server.ServeHTTP(response, request)
 
 		got := response.Result().StatusCode
-		want := 202
+		want := 201
 
 		assertStatus(t, got, want)
 
